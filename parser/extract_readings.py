@@ -117,7 +117,7 @@ def extract_sections(file_path):
 #        nearest p element after the initial h3 elements.
 #        That is why, for instance, the first element for
 #        masses_raw_text['I Semana do Advento Domingo'] is
-#        'ANTÝFONA DE ENTRADA - Salmo\n24, 1-3' and not
+#        'ANTÍFONA DE ENTRADA - Salmo\n24, 1-3' and not
 #        something like 'I Semana do Advento'. 
 #         
 #  reset was_h3 back to false
@@ -177,9 +177,9 @@ def get_mass_by_sections(mass_raw_text, sections):
 # Output test:
 
 # possible_sections = [
-#     "ANTÝFONA DE ENTRADA",
+#     "ANTÍFONA DE ENTRADA",
 #     "ORAÇÃO COLECTA",
-#     "ANTÝFONA DA COMUNHÃO",
+#     "ANTÍFONA DA COMUNHÃO",
 #     "ORAÇÃO SOBRE AS OBLATAS",
 #     "ORAÇÃO DEPOIS DA COMUNHÃO",
 #     "LEITURA I ",
@@ -320,9 +320,9 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
 # variable to each reading_type, each mapped to text values.
 
 # possible_sections = [
-#     "ANTÝFONA DE ENTRADA",
+#     "ANTÍFONA DE ENTRADA",
 #     "ORAÇÃO COLECTA",
-#     "ANTÝFONA DA COMUNHÃO",
+#     "ANTÍFONA DA COMUNHÃO",
 #     "ORAÇÃO SOBRE AS OBLATAS",
 #     "ORAÇÃO DEPOIS DA COMUNHÃO",
 #     "LEITURA I ",
@@ -357,9 +357,9 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
 # Scripts for Parsing Files to JSON
 
 possible_sections = [
-    "ANTÝFONA DE ENTRADA",
+    "ANTÍFONA DE ENTRADA",
     "ORAÇÃO COLECTA",
-    "ANTÝFONA DA COMUNHÃO",
+    "ANTÍFONA DA COMUNHÃO",
     "ORAÇÃO SOBRE AS OBLATAS",
     "ORAÇÃO DEPOIS DA COMUNHÃO",
     "LEITURA I ",
