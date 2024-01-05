@@ -176,27 +176,27 @@ def get_mass_by_sections(mass_raw_text, sections):
 
 # Output test:
 
-possible_sections = [
-    "ANTÍFONA DE ENTRADA",
-    "ORAÇÃO COLECTA",
-    "ANTÍFONA DA COMUNHÃO",
-    "ORAÇÃO SOBRE AS OBLATAS",
-    "ORAÇÃO DEPOIS DA COMUNHÃO",
-    "LEITURA I ",
-    "SALMO RESPONSORIAL",
-    "ALELUIA",
-    "LEITURA II",
-    "EVANGELHO"
-]
+# possible_sections = [
+#     "ANTÍFONA DE ENTRADA",
+#     "ORAÇÃO COLECTA",
+#     "ANTÍFONA DA COMUNHÃO",
+#     "ORAÇÃO SOBRE AS OBLATAS",
+#     "ORAÇÃO DEPOIS DA COMUNHÃO",
+#     "LEITURA I ",
+#     "SALMO RESPONSORIAL",
+#     "ALELUIA",
+#     "LEITURA II",
+#     "EVANGELHO"
+# ]
 
-masses_raw_text = extract_sections("_old/AdvSem01.htm")
+# masses_raw_text = extract_sections("_old/AdvSem01.htm")
 
-masses_raw_text_init_key = list(masses_raw_text.keys())[1:][0]
+# masses_raw_text_init_key = list(masses_raw_text.keys())[1:][0]
 
-mass_raw_text = masses_raw_text[masses_raw_text_init_key]
+# mass_raw_text = masses_raw_text[masses_raw_text_init_key]
 
-print(repr(get_mass_by_sections(mass_raw_text, possible_sections).keys()))
-print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['SALMO RESPONSORIAL - Salmo 121 (122), 1-2.4-5.6-7.8-9 (R. cf. 1)']))
+# print(repr(get_mass_by_sections(mass_raw_text, possible_sections).keys()))
+# print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['SALMO RESPONSORIAL - Salmo 121 (122), 1-2.4-5.6-7.8-9 (R. cf. 1)']))
 
 
 def create_json_mass_readings(reading_idxs, mass_by_section):
@@ -292,7 +292,7 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
           reading_data['verses'] = section_content[base_idx+3::3]
       else:
         reading_data['verses'] = section_content[base_idx+2::3]
-      # Example of need for this conditional flow?
+      # Example of need for ':Ou' conditional flow?
       # Shouldn't there also be some sort of alt-verses?
       # Slicing notation [start:stop:step]
      
@@ -304,11 +304,48 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
   return readings
     
 
+################################################################
+######################  Annotations for ########################
+### create_json_mass_readings(reading_idxs, mass_by_section) ###
+################################################################
 
+# Take in mass dictionary with sections as keys and the index
+# of whatever type of readings (["EVANGELHO", "LEITURA", 
+# "ALELUIA", "SALMO"]) of that same dictionary converted to a
+# list.
 
+# Returning readings, a dictionary with each reading type
+# as a key and a dictionary, reading_data its value. This
+# last one being another dictionary containing a set of keys
+# variable to each reading_type, each mapped to text values.
 
+possible_sections = [
+    "ANTÍFONA DE ENTRADA",
+    "ORAÇÃO COLECTA",
+    "ANTÍFONA DA COMUNHÃO",
+    "ORAÇÃO SOBRE AS OBLATAS",
+    "ORAÇÃO DEPOIS DA COMUNHÃO",
+    "LEITURA I ",
+    "SALMO RESPONSORIAL",
+    "ALELUIA",
+    "LEITURA II",
+    "EVANGELHO"
+]
 
+masses_raw_text = extract_sections("_old/AdvSem01.htm")
 
+masses_raw_text_init_key = list(masses_raw_text.keys())[1:][0]
+
+mass_raw_text = masses_raw_text[masses_raw_text_init_key]
+
+print(repr(get_mass_by_sections(mass_raw_text, possible_sections).keys()))
+
+mass_by_section = get_mass_by_sections(mass_raw_text, possible_sections)
+sections = list(mass_by_section.keys())
+keywords = ["EVANGELHO", "LEITURA", "ALELUIA", "SALMO"]
+reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
+
+print(repr(create_json_mass_readings(reading_idxs, mass_by_section)['reading-I']))
 
 ####################################################
 ####################################################
