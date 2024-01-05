@@ -196,7 +196,7 @@ masses_raw_text_init_key = list(masses_raw_text.keys())[1:][0]
 mass_raw_text = masses_raw_text[masses_raw_text_init_key]
 
 print(repr(get_mass_by_sections(mass_raw_text, possible_sections).keys()))
-print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['ALELUIA - Salmo 84, 8']))
+print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['SALMO RESPONSORIAL - Salmo 121 (122), 1-2.4-5.6-7.8-9 (R. cf. 1)']))
 
 
 def create_json_mass_readings(reading_idxs, mass_by_section):
@@ -273,9 +273,29 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
       reading_data['text'] = section_content[1]
       # Missing latin text?
 
-    
+    if 'Salmo' in name:
+      reading_type = 'psalm'
+      reading_data['reference'] = reference
 
+      base_idx = 0
+      if section_content[0][0] == '(':
+        reading_data['notice'] = section_content[0]
+        base_idx = 1
       
+      reading_data['response'] = ': '.join(section_content[base_idx + 2].split(': ')[1:])
+
+      if section_content[base_idx + 2].split(' ')[0] == 'Ou:':
+        reading_data['alt-response'] = ' '.join(section_content[base_idx+2].split(' ')[1:])
+        if len(section_content[base_idx+3:]) % 3 == 1:
+          reading_data['verses'] = section_content[base_idx+4::3]
+        else:
+          reading_data['verses'] = section_content[base_idx+3::3]
+      else:
+        reading_data['verses'] = section_content[base_idx+2::3]
+      # Example of need for this conditional flow?
+      # Shouldn't there also be some sort of alt-verses?
+      # Slicing notation [start:stop:step]
+     
     if reading_type != None:
       readings[reading_type] = reading_data
     else:
