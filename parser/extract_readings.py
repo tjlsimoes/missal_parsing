@@ -1,6 +1,7 @@
 from collections import defaultdict
 from bs4 import BeautifulSoup
 import re
+import json
 
 def recursive_defaultdict():
   return defaultdict(recursive_defaultdict)
@@ -373,41 +374,41 @@ possible_sections = [
 advent_readings = defaultdict(recursive_defaultdict)
 
 # Weeks 1-3
-# file_paths = [
-#     "../_old/AdvSem01.htm",
-#     "../_old/AdvSem02.htm",
-#     "../_old/AdvSem03.htm",
-# ]
+file_paths = [
+    "../_old/AdvSem01.htm",
+    "../_old/AdvSem02.htm",
+    "../_old/AdvSem03.htm",
+]
 
 weekdays = ["1", "1", "1", "2", "3", "4", "5", "6", "7"]
 cycles = ["A", "B", "C"]
 
 
-# for i, file_path in enumerate(file_paths):
-#   masses_raw_text = extract_sections(file_path)
+for i, file_path in enumerate(file_paths):
+  masses_raw_text = extract_sections(file_path)
 
-#   for i, key in enumerate(list(masses_raw_text.keys())[1:]):
-#     # [1:] == Exclusion of first key in masses_raw_text as the 
-#     #   first key refers to the first sunday section with its
-#     #   propers.
-#     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
-#     sections = list(mass_by_section.keys())
+  for i, key in enumerate(list(masses_raw_text.keys())[1:]):
+    # [1:] == Exclusion of first key in masses_raw_text as the 
+    #   first key refers to the first sunday section with its
+    #   propers.
+    mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+    sections = list(mass_by_section.keys())
 
-#     keywords = ["EVANGELHO", "LEITURA", "ALELUIA", "SALMO"]
-#     reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
-#     # CHATGPT: reading_idxs will contain the indices of elements in the sections list where any of the keywords are found.
-#     # Is a dictionary an **ordered** collection of key-value pairs, as opposed to a unorderd collection of key-value pairs?
+    keywords = ["EVANGELHO", "LEITURA", "ALELUIA", "SALMO"]
+    reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
+    # CHATGPT: reading_idxs will contain the indices of elements in the sections list where any of the keywords are found.
+    # Is a dictionary an **ordered** collection of key-value pairs, as opposed to a unorderd collection of key-value pairs?
 
-#     readings = create_json_mass_readings(reading_idxs, mass_by_section)
+    readings = create_json_mass_readings(reading_idxs, mass_by_section)
 
-#     if weekdays[i] == '1':
-#       if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
-#         advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
-#       # readings['cycle'] = [cycles][i]
-#       readings = {**{'cycle': cycles[i]}, **readings}
-#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
-#     else:
-#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
+    if weekdays[i] == '1':
+      if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
+        advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
+      # readings['cycle'] = [cycles][i]
+      readings = {**{'cycle': cycles[i]}, **readings}
+      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
+    else:
+      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
 
 # print('\nadvent_readings.keys()\n')
 # print(repr(advent_readings.keys()))
@@ -429,40 +430,40 @@ cycles = ["A", "B", "C"]
 
 # Week 4 (Sundays)
 
-# season = 'advent'
+season = 'advent'
 
-# file_paths = [
-#   '../_old/AdvSem04.htm'
-# ]
+file_paths = [
+  '../_old/AdvSem04.htm'
+]
 
-# for i, file_path in enumerate(file_paths):
-#   masses_raw_text = extract_sections(file_path)
+for i, file_path in enumerate(file_paths):
+  masses_raw_text = extract_sections(file_path)
 
-#   # print(repr(masses_raw_text.keys()))
-#   # print(repr(list(masses_raw_text.keys())[1:4]))
+  # print(repr(masses_raw_text.keys()))
+  # print(repr(list(masses_raw_text.keys())[1:4]))
 
-#   for i, key, in enumerate(list(masses_raw_text.keys())[1:4]):
-#     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
-#     sections = list(mass_by_section.keys())
+  for i, key, in enumerate(list(masses_raw_text.keys())[1:4]):
+    mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+    sections = list(mass_by_section.keys())
 
-#     keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
-#     reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
+    keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
+    reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
 
-#     mass_metadata = {
-#       'season': season,
-#       'week': file_path[-6:-4],
-#       'weekday': weekdays[i]
-#     }
+    mass_metadata = {
+      'season': season,
+      'week': file_path[-6:-4],
+      'weekday': weekdays[i]
+    }
 
-#     readings = create_json_mass_readings(reading_idxs, mass_by_section)
+    readings = create_json_mass_readings(reading_idxs, mass_by_section)
     
-#     if weekdays[i] == '1':
-#       if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
-#         advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
-#       readings = {**{'cycle': cycles[i]}, **readings}
-#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
-#     else:
-#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
+    if weekdays[i] == '1':
+      if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
+        advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
+      readings = {**{'cycle': cycles[i]}, **readings}
+      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
+    else:
+      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
 
 
 # print('\nadvent_readings.keys()\n')
@@ -502,14 +503,14 @@ for i, file_path in enumerate(file_paths):
 
     advent_readings['december'][days[i]] = readings
 
-print('\nadvent_readings.keys()\n')
-print(repr(advent_readings.keys()))
+# print('\nadvent_readings.keys()\n')
+# print(repr(advent_readings.keys()))
 
-print('\nadvent_readings[\'december\'].keys()\n')
-print(repr(advent_readings['december'].keys()))
+# print('\nadvent_readings[\'december\'].keys()\n')
+# print(repr(advent_readings['december'].keys()))
 
-print('\nadvent_readings[\'december\'][\'17\']\n')
-print(repr(advent_readings['december']['17']))
+# print('\nadvent_readings[\'december\'][\'17\']\n')
+# print(repr(advent_readings['december']['17']))
 
 
 #################################################################
@@ -521,3 +522,20 @@ print(repr(advent_readings['december']['17']))
 # Why is there a duplication in certain days, of Oração dos Fiéis?
 # e.g. 17 de Dezembro
 
+
+
+advent_readings = defaultdict_to_dict(advent_readings)
+
+# print(repr(advent_readings.keys()))
+
+# print(repr(advent_readings['week-01'].keys()))
+
+# print(repr(len(advent_readings['week-01']['1'])))
+
+# print(repr(advent_readings['week-01']['1']))
+
+advent = {'readings': advent_readings}
+
+output_file_path = f'../_new/pt/advent.json'
+with open(output_file_path, 'w', encoding='utf-8') as file:
+  json.dump(advent, file, ensure_ascii=False, indent=4)
