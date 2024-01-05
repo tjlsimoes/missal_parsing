@@ -429,47 +429,95 @@ cycles = ["A", "B", "C"]
 
 # Week 4 (Sundays)
 
+# season = 'advent'
+
+# file_paths = [
+#   '../_old/AdvSem04.htm'
+# ]
+
+# for i, file_path in enumerate(file_paths):
+#   masses_raw_text = extract_sections(file_path)
+
+#   # print(repr(masses_raw_text.keys()))
+#   # print(repr(list(masses_raw_text.keys())[1:4]))
+
+#   for i, key, in enumerate(list(masses_raw_text.keys())[1:4]):
+#     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+#     sections = list(mass_by_section.keys())
+
+#     keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
+#     reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
+
+#     mass_metadata = {
+#       'season': season,
+#       'week': file_path[-6:-4],
+#       'weekday': weekdays[i]
+#     }
+
+#     readings = create_json_mass_readings(reading_idxs, mass_by_section)
+    
+#     if weekdays[i] == '1':
+#       if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
+#         advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
+#       readings = {**{'cycle': cycles[i]}, **readings}
+#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
+#     else:
+#       advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
+
+
+# print('\nadvent_readings.keys()\n')
+# print(repr(advent_readings.keys()))
+
+# print('\nadvent_readings[\'week-04\'].keys()\n')
+# print(repr(advent_readings['week-04'].keys()))
+
+# print('\nadvent_readings[\'week-04\'][\'1\'])\n')
+# print(repr(advent_readings['week-04']['1']))
+
+
+
+
+# Week 4 (Specific days)
+
 season = 'advent'
+month = 'december'
 
 file_paths = [
   '../_old/AdvSem04.htm'
 ]
 
+days = [str(i) for i in range(17,25)]
+
 for i, file_path in enumerate(file_paths):
   masses_raw_text = extract_sections(file_path)
 
-  # print(repr(masses_raw_text.keys()))
-  # print(repr(list(masses_raw_text.keys())[1:4]))
-
-  for i, key, in enumerate(list(masses_raw_text.keys())[1:4]):
+  for i, key in enumerate(list(masses_raw_text.keys())[4:]):
     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
     sections = list(mass_by_section.keys())
 
     keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
     reading_idxs = [i for i, element in enumerate(sections) if any(word in element for word in keywords)]
 
-    mass_metadata = {
-      'season': season,
-      'week': file_path[-6:-4],
-      'weekday': weekdays[i]
-    }
-
     readings = create_json_mass_readings(reading_idxs, mass_by_section)
-    
-    if weekdays[i] == '1':
-      if advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] == {}:
-        advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = []
-      readings = {**{'cycle': cycles[i]}, **readings}
-      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]].append(readings)
-    else:
-      advent_readings[f'week-{file_path[-6:-4]}'][weekdays[i]] = readings
 
+    advent_readings['december'][days[i]] = readings
 
 print('\nadvent_readings.keys()\n')
 print(repr(advent_readings.keys()))
 
-print('\nadvent_readings[\'week-04\'].keys()\n')
-print(repr(advent_readings['week-04'].keys()))
+print('\nadvent_readings[\'december\'].keys()\n')
+print(repr(advent_readings['december'].keys()))
 
-print('\nadvent_readings[\'week-04\'][\'1\'])\n')
-print(repr(advent_readings['week-04']['1']))
+print('\nadvent_readings[\'december\'][\'17\']\n')
+print(repr(advent_readings['december']['17']))
+
+
+#################################################################
+#################### Week 4 annotations #########################
+#################################################################
+
+# Why is there a duplication of Tempo de Advento Domingo A in 
+# these files?
+# Why is there a duplication in certain days, of Oração dos Fiéis?
+# e.g. 17 de Dezembro
+
