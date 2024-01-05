@@ -196,7 +196,7 @@ masses_raw_text_init_key = list(masses_raw_text.keys())[1:][0]
 mass_raw_text = masses_raw_text[masses_raw_text_init_key]
 
 print(repr(get_mass_by_sections(mass_raw_text, possible_sections).keys()))
-print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['EVANGELHO - Mt 24, 37-44']))
+print(repr(get_mass_by_sections(mass_raw_text, possible_sections)['ALELUIA - Salmo 84, 8']))
 
 
 def create_json_mass_readings(reading_idxs, mass_by_section):
@@ -264,8 +264,18 @@ def create_json_mass_readings(reading_idxs, mass_by_section):
       reading_data['text'] = re.sub(r"(Palavra da salvação\.)$", "", section_content[2])
       # Again is this substitution required? For Primeira Semana Advento Domingo Ano A 
       # e Quinta-Feira it was not.
+    
+    if 'Aleluia' in name:
+      reading_type = 'aleluia'
+      reading_data['reference'] = reference
+      reading_data['response'] = ': '.join(section_content[0].split(': ')[1:])
+      # In case of extra ': ' beyond that separating response from 'Refrão', right?
+      reading_data['text'] = section_content[1]
+      # Missing latin text?
 
     
+
+      
     if reading_type != None:
       readings[reading_type] = reading_data
     else:
