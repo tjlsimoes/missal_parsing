@@ -138,9 +138,12 @@ file_paths = [
 
 for i, file_path in enumerate(file_paths):
   masses_raw_text = extract_sections(file_path)
-
+  # print(f'{i}, {file_path}')
   for i, key in enumerate(list(masses_raw_text.keys())[0:]):
+    # Why is this [0:] necessary?
+    # print(f'{i}, {key}')
     if i in [1, 2, 3]:
+      # print('Does not go through.')
       continue
     # What i is exactly being refered to here?
     # idx that would match the different cycle sunday readings'
@@ -160,6 +163,44 @@ for i, file_path in enumerate(file_paths):
     advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
 
 
-print(repr(advent_propers.keys()))
-print(repr(advent_propers['week-01'].keys()))
-print(repr(advent_propers['week-01']['1']))
+# print(repr(advent_propers.keys()))
+# print(repr(advent_propers['week-01'].keys()))
+# print(repr(advent_propers['week-01']['1']))
+    
+
+
+# Week 4 (Sundays' propers)
+
+file_paths = [
+  '../_old/AdvSem04.htm'
+]
+
+for i, file_path in enumerate(file_paths):
+  masses_raw_text = extract_sections(file_path)
+  for i, key in enumerate(list(masses_raw_text.keys())[:1]): # Up to index 1!
+    print(f'{i}, {key}')
+    # if i in [1, 2, 3]:
+    #   continue
+    # Conditional flow unneccessary, right?
+    mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+    sections = list(mass_by_section.keys())
+
+    keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
+    propers_idxs = [i for i, element in enumerate(sections) if not any(word in element for word in keywords)]
+
+    propers = create_json_mass_propers(propers_idxs, mass_by_section)
+
+    advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
+
+
+
+# print(repr(advent_propers.keys()))
+
+# print('advent_propers[\'week-03\'].keys()')
+# print(repr(advent_propers['week-03'].keys()))
+
+# print('advent_propers[\'week-04\'].keys()')
+# print(repr(advent_propers['week-04'].keys()))
+
+# print('advent_propers[\'week-04\'][\'1\']')
+# print(repr(advent_propers['week-04']['1']))
