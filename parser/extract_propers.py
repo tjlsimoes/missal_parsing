@@ -1,5 +1,6 @@
 from collections import defaultdict
 from bs4 import BeautifulSoup
+import json
 
 def recursive_defaultdict():
   return defaultdict(recursive_defaultdict)
@@ -130,37 +131,37 @@ advent_propers = defaultdict(recursive_defaultdict)
 # Weeks 1-3
 # Sundays included!
 
-# file_paths = [
-#   '../_old/AdvSem01.htm',
-#   '../_old/AdvSem02.htm',
-#   '../_old/AdvSem03.htm'
-# ]
+file_paths = [
+  '../_old/AdvSem01.htm',
+  '../_old/AdvSem02.htm',
+  '../_old/AdvSem03.htm'
+]
 
-# for i, file_path in enumerate(file_paths):
-#   masses_raw_text = extract_sections(file_path)
-#   # print(f'{i}, {file_path}')
-#   for i, key in enumerate(list(masses_raw_text.keys())[0:]):
-#     # Why is this [0:] necessary?
-#     # print(f'{i}, {key}')
-#     if i in [1, 2, 3]:
-#       # print('Does not go through.')
-#       continue
-#     # What i is exactly being refered to here?
-#     # idx that would match the different cycle sunday readings'
-#     #   pages?
+for i, file_path in enumerate(file_paths):
+  masses_raw_text = extract_sections(file_path)
+  # print(f'{i}, {file_path}')
+  for i, key in enumerate(list(masses_raw_text.keys())[0:]):
+    # Why is this [0:] necessary?
+    # print(f'{i}, {key}')
+    if i in [1, 2, 3]:
+      # print('Does not go through.')
+      continue
+    # What i is exactly being refered to here?
+    # idx that would match the different cycle sunday readings'
+    #   pages?
   
-#     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
-#     sections = list(mass_by_section.keys())
+    mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+    sections = list(mass_by_section.keys())
 
-#     keywords = ["EVANGELHO", "LEITURA", "ALELUIA", "SALMO"]
-#     propers_idxs = [i for i, element in enumerate(sections) if not any(word in element for word in keywords)]
-#     # Seemingly: every section index that is not a reading.
-#     # To what extent wouldn't this step be avoidable with a refactoring
-#     #   possible_sections list to only include propers' sections?
+    keywords = ["EVANGELHO", "LEITURA", "ALELUIA", "SALMO"]
+    propers_idxs = [i for i, element in enumerate(sections) if not any(word in element for word in keywords)]
+    # Seemingly: every section index that is not a reading.
+    # To what extent wouldn't this step be avoidable with a refactoring
+    #   possible_sections list to only include propers' sections?
 
-#     propers = create_json_mass_propers(propers_idxs, mass_by_section)
+    propers = create_json_mass_propers(propers_idxs, mass_by_section)
 
-#     advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
+    advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
 
 
 # print(repr(advent_propers.keys()))
@@ -171,26 +172,25 @@ advent_propers = defaultdict(recursive_defaultdict)
 
 # Week 4 (Sundays' propers)
 
-# file_paths = [
-#   '../_old/AdvSem04.htm'
-# ]
+file_paths = [
+  '../_old/AdvSem04.htm'
+]
 
-# for i, file_path in enumerate(file_paths):
-#   masses_raw_text = extract_sections(file_path)
-#   for i, key in enumerate(list(masses_raw_text.keys())[:1]): # Up to index 1.
-#     print(f'{i}, {key}')
-#     # if i in [1, 2, 3]:
-#     #   continue
-#     # Conditional flow unneccessary, right?
-#     mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
-#     sections = list(mass_by_section.keys())
+for i, file_path in enumerate(file_paths):
+  masses_raw_text = extract_sections(file_path)
+  for i, key in enumerate(list(masses_raw_text.keys())[:1]): # Up to index 1.
+    # if i in [1, 2, 3]:
+    #   continue
+    # Conditional flow unneccessary, right?
+    mass_by_section = get_mass_by_sections(masses_raw_text[key], possible_sections)
+    sections = list(mass_by_section.keys())
 
-#     keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
-#     propers_idxs = [i for i, element in enumerate(sections) if not any(word in element for word in keywords)]
+    keywords = ['EVANGELHO', 'LEITURA', 'ALELUIA', 'SALMO']
+    propers_idxs = [i for i, element in enumerate(sections) if not any(word in element for word in keywords)]
 
-#     propers = create_json_mass_propers(propers_idxs, mass_by_section)
+    propers = create_json_mass_propers(propers_idxs, mass_by_section)
 
-#     advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
+    advent_propers[f'week-{file_path[-6:-4]}'][weekdays[i]] = propers
 
 
 
@@ -231,6 +231,22 @@ for i, file_path in enumerate(file_paths):
     advent_propers[month][days[i]] = propers
 
 
-print(repr(advent_propers.keys()))
-print(repr(advent_propers['december'].keys()))
-print(repr(advent_propers['december']['17']))
+# print(repr(advent_propers.keys()))
+# print(repr(advent_propers['december'].keys()))
+# print(repr(advent_propers['december']['17']))
+
+file_path = '../_new/pt/advent.json'
+
+# Open the file and load its content as a Pyhton dictionary
+with open(file_path, 'r', encoding='utf-8') as file:
+  advent_readings = json.load(file)['readings']
+
+advent_readings = defaultdict_to_dict(advent_readings)
+advent = {
+  'propers': advent_propers,
+  'readings': advent_readings
+}
+
+output_file_path = f'../_new/pt/advent.json'
+with open(output_file_path, 'w', encoding='utf-8') as file:
+  json.dump(advent, file, ensure_ascii=False, indent = 4)
