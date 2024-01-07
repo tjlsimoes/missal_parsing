@@ -250,3 +250,67 @@ advent = {
 output_file_path = f'../_new/pt/advent.json'
 with open(output_file_path, 'w', encoding='utf-8') as file:
   json.dump(advent, file, ensure_ascii=False, indent = 4)
+
+
+# ChatGPT explanation of first two functions:
+# The provided code defines two functions related
+# to defaultdict, a data structure in Python that
+# allows you to provide a default value for nonexistent keys. 
+# Here's an explanation of each function:
+
+#     recursive_defaultdict:
+
+# This function returns an instance of defaultdict
+# that is configured to use itself as the default 
+# factory. In other words, when you access a key
+# that does not exist in the defaultdict, it
+# automatically creates a new defaultdict for
+# that key. This creates a recursive structure,
+# where nested defaultdicts are used for keys at
+# different levels.
+
+#     For example:
+
+#     my_dict = recursive_defaultdict()
+#     my_dict['key1']['key2']['key3'] = 42
+
+#     In this case, accessing my_dict['key1']['key2']['key3']
+# would automatically create defaultdicts for 'key1', 'key2' 
+# and 'key3' if they don't exist.
+
+#     defaultdict_to_dict:
+
+#     This function takes a defaultdict (or a nested structure of 
+# defaultdicts) and converts it into a regular Python dictionary.
+# It does so by first converting the defaultdict itself into a 
+# dict using dict(d). Then, it recursively applies the conversion
+# to all the values in the dictionary.
+
+# The recursion is achieved by iterating over the key-value pairs
+# in the dictionary and calling defaultdict_to_dict on each value.
+# This ensures that all nested defaultdicts are converted to regular
+# dictionaries.
+
+# The base case for the recursion is when the value is not a
+# defaultdict, in which case it is returned as is.
+
+# This function is useful when you want to convert a nested
+# defaultdict structure into a regular dictionary, removing
+# the defaultdict behavior.
+
+# Usage example:
+
+# from collections import defaultdict
+
+# # Example of a nested defaultdict
+# nested_defaultdict = recursive_defaultdict()
+# nested_defaultdict['key1']['key2']['key3'] = 42
+
+# # Convert the nested defaultdict to a regular dictionary
+# regular_dict = defaultdict_to_dict(nested_defaultdict)
+
+# print(regular_dict)
+
+# This would output:
+
+# {'key1': {'key2': {'key3': 42}}}
